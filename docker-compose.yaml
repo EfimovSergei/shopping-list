@@ -1,0 +1,31 @@
+version: '3.5'
+
+services:
+  server:
+    build: ./
+    container_name: 'shopping-list-server'
+    image: 'shopping-list:0.0.1'
+    ports:
+      - '8080:8080'
+    depends_on:
+      - database
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://database:5432/postgres
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: 3267
+
+  database:
+    container_name: 'shopping-list-db'
+    image: postgres
+    environment:
+      POSTGRES_DB: "postgres"
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "3267"
+    volumes:
+      - postgres:/data/postgres
+    ports:
+      - "5432:5432"
+    restart: unless-stopped
+
+volumes:
+  postgres:
